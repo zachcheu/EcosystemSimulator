@@ -13,24 +13,17 @@ Missionaries_Array_VIS_FOR_TK.py.
 '''
 #<METADATA>
 SOLUZION_VERSION = "1.0"
-PROBLEM_NAME = "Missionaries and Cannibals"
+PROBLEM_NAME = "Ecosystem Simulator"
 PROBLEM_VERSION = "1.1"
-PROBLEM_AUTHORS = ['S. Tanimoto']
-PROBLEM_CREATION_DATE = "02-AUG-2017"
+PROBLEM_AUTHORS = ['Z. Cheung, V. Gupta, E. Song, D., R. Mukai']
+PROBLEM_CREATION_DATE = "06-SEP-2017"
 
 # The following field is mainly for the human solver, via either the Text_SOLUZION_Client.
 # or the SVG graphics client.
 PROBLEM_DESC=\
- '''The <b>"Missionaries and Cannibals"</b> problem is a traditional puzzle
-in which the player starts off with three missionaries and three cannibals
-on the left bank of a river.  The object is to execute a sequence of legal
-moves that transfers them all to the right bank of the river.  In this
-version, there is a boat that can carry at most three people, and one of
-them must be a missionary to steer the boat.  It is forbidden to ever
-have one or two missionaries outnumbered by cannibals, either on the
-left bank, right bank, or in the boat.  In the formulation presented
-here, the computer will not let you make a move to such a forbidden situation, and it
-will only show you moves that could be executed "safely."
+ '''The <b>"Ecosystem Simulator"</b> An ecosystem simulator/
+game made with python that addresses
+the wicked problem of bio extinction."
 '''
 #</METADATA>
 
@@ -38,16 +31,25 @@ will only show you moves that could be executed "safely."
 #</COMMON_DATA>
 
 #<COMMON_CODE>
-M=0  # array index to access missionary counts
-C=1  # same idea for cannibals
-LEFT=0 # same idea for left side of river
-RIGHT=1 # etc.
+
+animal = [3,3,3,3,3]#1-extinct, 2-endangered, 3-balanced, 4-overpopulated, 5-dangerously overpopulated
+currency = 100000
+
+class card:
+  def __init__(self,ques,stat1,stat2,dia1,dia2,card):
+    self.ques = ques
+    self.stat1 = stat1
+    self.stat2 = stat2
+    self.dia1 = dia1
+    self.dia2= dia2
+    self.card = card
+  
 
 def copy_state(s):
   news = {}
-  news['people']=[[0,0],[0,0]]
-  for i in range(2): news['people'][i]=s['people'][i][:]
-  news['boat'] = s['boat']
+  news['animal']=s['animal']
+  news['currency'] = s['currency']
+  news['card'] = s['card']
   return news
 
 def can_move(s,m,c):

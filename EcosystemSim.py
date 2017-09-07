@@ -31,79 +31,72 @@ the wicked problem of bio extinction."
 #</COMMON_DATA>
 
 #<COMMON_CODE>
-
+turn = 12
 animal = [3,3,3,3,3]#1-extinct, 2-endangered, 3-balanced, 4-overpopulated, 5-dangerously overpopulated
+#hawk,snake,rabbit,mouse,flowers
 currency = 100000
 
+
 class card:
-  def __init__(self,ques,stat1,stat2,dia1,dia2,card):
-    self.ques = ques
-    self.stat1 = stat1
-    self.stat2 = stat2
-    self.dia1 = dia1
-    self.dia2= dia2
-    self.card = card
+  def __init__(self,ques,stat1,stat2,curr,dia1,dia2,card,choiceList):
+    self.ques = ques#question
+    self.yesStat = stat1#change animal1
+    self.noStat = stat2#change animal2
+    self.curr = curr#change currency
+    self.dia1 = dia1#print after choice1
+    self.dia2= dia2#print after choice2
+    self.card = card#card number
+    self.choiceList = choiceList#list of number to indicate choices
   
 
 def copy_state(s):
   news = {}
+  news['turn'] = s['turn']
   news['animal']=s['animal']
   news['currency'] = s['currency']
   news['card'] = s['card']
   return news
 
 def can_move(s,m,c):
-  '''Tests whether it's legal to move the boat and take
-     m missionaries and c cannibals.'''
-  side = s['boat'] # Where the boat is.
-  p = s['people']
-  if m<1: return False # Need an M to steer boat.
-  m_available = p[M][side]
-  if m_available < m: return False # Can't take more m's than available
-  c_available = p[C][side]
-  if c_available < c: return False # Can't take more c's than available
-  m_remaining = m_available - m
-  c_remaining = c_available - c
-  # Missionaries must not be outnumbered on either side:
-  if m_remaining > 0 and m_remaining < c_remaining: return False
-  m_at_arrival = p[M][1-side]+m
-  c_at_arrival = p[C][1-side]+c
-  if m_at_arrival > 0 and m_at_arrival < c_at_arrival: return False
+  '''Get the card for the state and from that get the listed choices'''
   return True
+def changeStat(s,change):
+  if change[0] == "h":
+    s['animal'][0] += change[1]
+  elif change[0] == "s":
+    s['animal'][1] += change[1]
+  elif change[0] == "r":
+    s['animal'][2] += change[1]
+  elif change[0] == "m":
+    s['animal'][3] += change[1]
+  elif change[0] == "f":
+    s['animal'][4] += change[1]
 
-def move(olds,m,c):
+def newCard(s):
+  
+def move(olds,x):
   '''Assuming it's legal to make the move, this computes
      the new state resulting from moving the boat carrying
      m missionaries and c cannibals.'''
   s = copy_state(olds) # start with a deep copy.
-  side = s['boat']
-  p = s['people']
-  p[M][side] = p[M][side]-m     # Remove people from the current side.
-  p[C][side] = p[C][side]-c
-  p[M][1-side] = p[M][1-side]+m # Add them at the other side.
-  p[C][1-side] = p[C][1-side]+c
-  s['boat'] = 1-side            # Move the boat itself.
+  if x == "Yes":
+    changeStat(s,s['card'].yesStat)
+  elif x == "No":
+    changeStat(s,s['card'].noStat)
+  s['card'] = newCard()
+  
   return s
 
 def describe_state(s):
   # Produces a textual description of a state.
   # Might not be needed in normal operation with GUIs.
-  p = s['people']
-  txt = "M on left:"+str(p[M][LEFT])+"\n"
-  txt += "C on left:"+str(p[C][LEFT])+"\n"
-  txt += "  M on right:"+str(p[M][RIGHT])+"\n"
-  txt += "  C on right:"+str(p[C][RIGHT])+"\n"
-  side='left'
-  if s['boat']==1: side='right'
-  txt += " boat is on the "+side+".\n"
-  return txt
-
+  
 def goal_test(s):
   '''If all Ms and Cs are on the right, then s is a goal state.'''
-  p = s['people']
-  return (p[M][RIGHT]==3 and p[C][RIGHT]==3)
+  return turn == 0
 
 def goal_message(s):
+
   return "Congratulations on successfully guiding the missionaries and cannibals across the river!"
 
 class Operator:
@@ -120,17 +113,17 @@ class Operator:
 #</COMMON_CODE>
 
 #<INITIAL_STATE>
-INITIAL_STATE = {'people':[[3, 0], [3, 0]], 'boat':LEFT }
+#INITIAL_STATE = {'animal':[[3, 0], [3, 0]], 'boat':LEFT }
 #</INITIAL_STATE>
 
 #<OPERATORS>
-MC_combinations = [(1,0),(2,0),(3,0),(1,1),(2,1)]
+Ecosystem_Operators = ["Yes", "No"]
 
 OPERATORS = [Operator(
-  "Cross the river with "+str(m)+" missionaries and "+str(c)+" cannibals",
-  lambda s, m1=m, c1=c: can_move(s,m1,c1),
-  lambda s, m1=m, c1=c: move(s,m1,c1) ) 
-  for (m,c) in MC_combinations]
+  x,
+  lambda s, x1 = x: can_move(s,x1),
+  lambda s, x1 = x: move(s,x1) ) 
+  for x in Ecosystem_Operators]
 #</OPERATORS>
 
 #<GOAL_TEST> (optional)

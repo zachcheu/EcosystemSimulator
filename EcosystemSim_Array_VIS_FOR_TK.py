@@ -9,8 +9,8 @@ from tkinter import font
 
 myFont=None
 
-WIDTH = 400
-HEIGHT = 200
+WIDTH = 500
+HEIGHT = 500
 TITLE = 'Ecosystem Simulator'
 
 def initialize_vis():
@@ -48,7 +48,7 @@ def render_state(s):
                                   text_font=myFont,
                                   caption=caption)
     print("the_state_array is: "+str(the_state_array))
-    the_state_array.show()
+    the_state_array.show(s)
 
     
     

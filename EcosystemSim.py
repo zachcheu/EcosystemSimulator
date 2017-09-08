@@ -73,21 +73,32 @@ def copy_state(s):
   news['card'] = s['card']
   return news
 
-def can_move(s,m):
+def can_move(s,m,i):
+  for l in s['card'].choiceList:
+    if l == i:
+      return True
+
+  return False
+  
   '''Get the card for the state and from that get the listed choices'''
   return True
 def changeStat(s,listChange):
   for change in listChange:
     if change[0] == "h":
-      s['animal'][0] += change[1]
+      if s['animal'][0] + change[1] > -1 or s['animal'][0] + change[1] < 6:
+        s['animal'][0] += change[1]
     elif change[0] == "s":
-      s['animal'][1] += change[1]
+      if s['animal'][1] + change[1] > -1 or s['animal'][1] + change[1] < 6:
+        s['animal'][1] += change[1]
     elif change[0] == "r":
-      s['animal'][2] += change[1]
+      if s['animal'][2] + change[1] > -1 or s['animal'][2] + change[1] < 6:
+        s['animal'][2] += change[1]
     elif change[0] == "m":
-      s['animal'][3] += change[1]
+      if s['animal'][3] + change[1] > -1 or s['animal'][3] + change[1] < 6:
+        s['animal'][3] += change[1]
     elif change[0] == "f":
-      s['animal'][4] += change[1]
+      if s['animal'][4] + change[1] > -1 or s['animal'][4] + change[1] < 6:
+        s['animal'][4] += change[1]
 
 def newCard(s):
   return cardList[s['turn']%len(cardList)]
@@ -142,9 +153,9 @@ Ecosystem_Operators = ["Yes", "No"]
 
 OPERATORS = [Operator(
   x,
-  lambda s, x1 = x: can_move(s,x1),
+  lambda s, x1 = x: can_move(s,x1,i),
   lambda s, x1 = x: move(s,x1) ) 
-  for x in Ecosystem_Operators]
+  for i,x in enumerate(Ecosystem_Operators)]
 #</OPERATORS>
 
 #<GOAL_TEST> (optional)

@@ -31,6 +31,7 @@ the wicked problem of bio extinction."
 #</COMMON_DATA>
 
 #<COMMON_CODE>
+
 global turn
 turn = 12
 animal = [3,3,3,3,3]#1-extinct, 2-endangered, 3-balanced, 4-overpopulated, 5-dangerously overpopulated
@@ -70,11 +71,11 @@ def copy_state(s):
   news['turn'] = s['turn']
   news['animal']=s['animal']
   news['currency'] = s['currency']
-  news['card'] = s['card']
   return news
 
 def can_move(s,m,i):
-  for l in s['card'].choiceList:
+  currentCard = newCard(s)
+  for l in currentCard.choiceList:
     if l == i:
       return True
 
@@ -85,19 +86,19 @@ def can_move(s,m,i):
 def changeStat(s,listChange):
   for change in listChange:
     if change[0] == "h":
-      if s['animal'][0] + change[1] > -1 or s['animal'][0] + change[1] < 6:
+      if s['animal'][0] + change[1] > 0 or s['animal'][0] + change[1] < 6:
         s['animal'][0] += change[1]
     elif change[0] == "s":
-      if s['animal'][1] + change[1] > -1 or s['animal'][1] + change[1] < 6:
+      if s['animal'][1] + change[1] > 0 or s['animal'][1] + change[1] < 6:
         s['animal'][1] += change[1]
     elif change[0] == "r":
-      if s['animal'][2] + change[1] > -1 or s['animal'][2] + change[1] < 6:
+      if s['animal'][2] + change[1] > 0 or s['animal'][2] + change[1] < 6:
         s['animal'][2] += change[1]
     elif change[0] == "m":
-      if s['animal'][3] + change[1] > -1 or s['animal'][3] + change[1] < 6:
+      if s['animal'][3] + change[1] > 0 or s['animal'][3] + change[1] < 6:
         s['animal'][3] += change[1]
     elif change[0] == "f":
-      if s['animal'][4] + change[1] > -1 or s['animal'][4] + change[1] < 6:
+      if s['animal'][4] + change[1] > 0 or s['animal'][4] + change[1] < 6:
         s['animal'][4] += change[1]
 
 def newCard(s):
@@ -108,12 +109,13 @@ def move(olds,x):
      the new state resulting from moving the boat carrying
      m missionaries and c cannibals.'''
   s = copy_state(olds) # start with a deep copy.
+  currentCard = newCard(s)
   if x == "Yes":
-    changeStat(s,s['card'].yesStat)
+    changeStat(s,currentCard.yesStat)
   elif x == "No":
-    changeStat(s,s['card'].noStat)
+    changeStat(s,currentCard.noStat)
   s['turn'] +=1
-  s['card'] = newCard(s)
+
 
   
   return s
@@ -145,7 +147,7 @@ class Operator:
 #</COMMON_CODE>
 
 #<INITIAL_STATE>
-INITIAL_STATE = {'turn':12 ,'animal':[3,3,3,3,3], 'currency':10000,'card':cardList[0]}
+INITIAL_STATE = {'turn':12 ,'animal':[3,3,3,3,3], 'currency':10000}
 #</INITIAL_STATE>
 
 #<OPERATORS>

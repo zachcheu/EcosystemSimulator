@@ -31,12 +31,12 @@ the wicked problem of bio extinction."
 #</COMMON_DATA>
 
 #<COMMON_CODE>
+global turn
 turn = 12
 animal = [3,3,3,3,3]#1-extinct, 2-endangered, 3-balanced, 4-overpopulated, 5-dangerously overpopulated
 #hawk,snake,rabbit,mouse,flowers
 currency = 100000
-
-
+                          
 class card:
   def __init__(self,ques,stat1,stat2,curr,dia1,dia2,card,choiceList):
     self.ques = ques#question
@@ -48,7 +48,23 @@ class card:
     self.card = card#card number
     self.choiceList = choiceList#list of number to indicate choices
   
-
+card1 = card("Do you want to deploy some hawks to curb the snake population. \
+This will also have an impact on the population population of mice due to the \
+reduced number of snakes.",[("s",-1),("m",-1)],[],0,"dia1","dia2",1,[0,1])
+card2 = card("Do you want to plant more flowers to increase the supply of food \
+for rabbits. This will have an impact on the population of snakes due to the \
+increased supply of food for them.",[("f",1),("r",1),("s",1)],[],0,"dia1","dia2",2,[0,1])
+card3 = card("Do you want to build a steel factory next to the wildflowers gardens.\
+Toxic waste from the factory might kill some of the wildflowers. This will cause some\
+of the rabbits to starve to death.",[("f",-1),("r",-1)],[],0,"dia1","dia2",3,[0,1])
+card4 = card("Do you want to legalize the hunting of hawks as game? This will cause \
+a decrease in the population of hawks and consequently increase the population of\
+rabbits.",[("h",-1),("r",1)],[],0,"dia1","dia2",4,[0,1])
+cardList = []
+cardList.append(card1)
+cardList.append(card2)
+cardList.append(card3)
+cardList.append(card4)
 def copy_state(s):
   news = {}
   news['turn'] = s['turn']
@@ -57,22 +73,24 @@ def copy_state(s):
   news['card'] = s['card']
   return news
 
-def can_move(s,m,c):
+def can_move(s,m):
   '''Get the card for the state and from that get the listed choices'''
   return True
-def changeStat(s,change):
-  if change[0] == "h":
-    s['animal'][0] += change[1]
-  elif change[0] == "s":
-    s['animal'][1] += change[1]
-  elif change[0] == "r":
-    s['animal'][2] += change[1]
-  elif change[0] == "m":
-    s['animal'][3] += change[1]
-  elif change[0] == "f":
-    s['animal'][4] += change[1]
+def changeStat(s,listChange):
+  for change in listChange:
+    if change[0] == "h":
+      s['animal'][0] += change[1]
+    elif change[0] == "s":
+      s['animal'][1] += change[1]
+    elif change[0] == "r":
+      s['animal'][2] += change[1]
+    elif change[0] == "m":
+      s['animal'][3] += change[1]
+    elif change[0] == "f":
+      s['animal'][4] += change[1]
 
 def newCard(s):
+  return cardList[s['turn']%len(cardList)]
   
 def move(olds,x):
   '''Assuming it's legal to make the move, this computes
@@ -83,17 +101,20 @@ def move(olds,x):
     changeStat(s,s['card'].yesStat)
   elif x == "No":
     changeStat(s,s['card'].noStat)
-  s['card'] = newCard()
+  s['turn'] +=1
+  s['card'] = newCard(s)
+
   
   return s
 
 def describe_state(s):
   # Produces a textual description of a state.
   # Might not be needed in normal operation with GUIs.
+  return "describing the state"
   
 def goal_test(s):
   '''If all Ms and Cs are on the right, then s is a goal state.'''
-  return turn == 0
+  return (turn == 0)
 
 def goal_message(s):
 
@@ -113,7 +134,7 @@ class Operator:
 #</COMMON_CODE>
 
 #<INITIAL_STATE>
-#INITIAL_STATE = {'animal':[[3, 0], [3, 0]], 'boat':LEFT }
+INITIAL_STATE = {'turn':12 ,'animal':[3,3,3,3,3], 'currency':10000,'card':cardList[0]}
 #</INITIAL_STATE>
 
 #<OPERATORS>

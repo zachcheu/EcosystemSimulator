@@ -68,7 +68,7 @@ PURPOSE OF THIS MODULE:
     """
 
 # The following line is used in the Tk_SOLUZION_Client and the IDLE_Text_SOLUZION_Client.
-problem_name = 'Missionaries'
+problem_name = 'EcosystemSim'
 
 def client_mainloop():
   print(TITLE)
@@ -94,6 +94,7 @@ Do you wish to continue exploring?
 
     applicability_vector = get_applicability_vector(CURRENT_STATE)
     #print("applicability_vector = "+str(applicability_vector))
+    print(CURRENT_STATE['card'].ques)
     for i in range(len(OPERATORS)):
       if applicability_vector[i]:
         print(str(i)+": "+OPERATORS[i].name)

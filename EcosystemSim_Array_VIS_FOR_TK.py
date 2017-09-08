@@ -11,7 +11,7 @@ myFont=None
 
 WIDTH = 400
 HEIGHT = 200
-TITLE = 'The Missionaries and Cannibals Puzzle'
+TITLE = 'Ecosystem Simulator'
 
 def initialize_vis():
   initialize_tk(WIDTH, HEIGHT, TITLE)
@@ -31,35 +31,16 @@ def render_state(s):
     purple = (128, 0, 192)
     cyan = (100, 200, 200)
     
-    row = [tan]*3 + [blue]*2 + [tan]*3
-    the_color_array = [row, row[:]]
+    row = [tan]*5
+    the_color_array = [row]
     # Now create the default array of string labels.
-    row = ['' for i in range(8)]
-    the_string_array = [row, row[:]]
+    row = ['' for i in range(5)]
+    the_string_array = [row]
 
     # Adjust colors and strings to match the state.
-    mleft = s['people'][0][0]
-    mright = s['people'][0][1]
-    for i in range(mleft):
-        the_color_array[0][i]=purple
-        the_string_array[0][i]='M'
-    for i in range(mright):
-        the_color_array[0][i+5]=purple
-        the_string_array[0][i+5]='M'
-    cleft = s['people'][1][0]
-    cright = s['people'][1][1]
-    for i in range(cleft):
-        the_color_array[1][i]=cyan
-        the_string_array[1][i]='C'
-    for i in range(cright):
-        the_color_array[1][i+5]=cyan
-        the_string_array[1][i+5]='C'
-    if s['boat']==0:
-        the_color_array[1][3]=brown
-        the_string_array[1][3]='B'
-    else:
-        the_color_array[1][4]=brown
-        the_string_array[1][4]='B'
+    animals = s['animal']
+    for count,i in enumerate(animals):
+      the_string_array[0][count]=i
 
     caption="Current state of the puzzle. Textual version: "+str(s)        
     the_state_array = state_array(color_array=the_color_array,

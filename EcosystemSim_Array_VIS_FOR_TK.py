@@ -23,7 +23,6 @@ def render_state(s):
     global myFont
     if not myFont:
         myFont = font.Font(family="Helvetica", size=18, weight="bold")
-    print("In render_state, state is "+str(s))
     # Create the default array of colors
     tan = (200,190,128)
     blue = (100,100,255)
@@ -38,7 +37,7 @@ def render_state(s):
     the_string_array = [row]
 
     # Adjust colors and strings to match the state.
-    animals = s['animal']
+    animals = s.animal
     for count,i in enumerate(animals):
       the_string_array[0][count]=i
 

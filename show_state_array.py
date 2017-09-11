@@ -42,7 +42,7 @@ class state_array:
     global STATE_WINDOW
     
     STATE_WINDOW.canvas.delete("all")
-    a = state['animal']
+    a = state.animal
   
     x0 = 0; y0 = 0;
     cellw = STATE_WINDOW.width / self.ncols
@@ -90,7 +90,7 @@ class state_array:
 
       STATE_WINDOW.canvas.create_line(300+80,0,300+80,180+20,width=5.0, fill = 'black')#limit
 
-      STATE_WINDOW.canvas.create_text(100,180+40,text="REVENUE:   "+ str(state['currency']))
+      STATE_WINDOW.canvas.create_text(100,180+40,text="REVENUE:   "+ str(state.currency))
       
 #      for c in r:
 #        print(c, end=' ')

@@ -31,19 +31,69 @@ the wicked problem of bio extinction."
 #</COMMON_DATA>
 
 #<COMMON_CODE>
+class Game_State:
+
+  def __init__(self, turn = 15, animal = [3,3,3,3,3], currency = 10000):  # Change parameters as needed for your game.
+    self.turn = turn
+    self.animal = animal
+    self.currency = 10000
+  
+  def __copy__(self):
+    news = Game_State(self.turn, self.animal, self.currency) # Change to be consistent with constructor
+    return news
+
+  def __str__(self):
+    # Produces a textual description of a state.
+    txt = "State is on " + str(self.turn) + ". Player has "+ str(self.currency) + " dollars. There are " + str(self.animal[0]) + " hawk(s), " + str(self.animal[1]) + " snake(s), " + str(self.animal[2])\
+          + " rabbit(s), " + str(self.animal[3]) + " mouse(s), " + str(self.animal[4]) + " flowers"
+    return txt
+
+  def __eq__(self, other):
+    if self is other: return True
+    if self is None: return False
+    if other is None: return False
+
+    if self.turn != other.turn:
+      return False
+    elif self.animal != other.animal:
+      return False
+    elif self.currency != other.currency:
+      return False
+    return True
+
+  def __hash__(self):
+    # This could be as simple as 
+    return (str(self)).__hash__()
+    
+"""# Optional:
+  def can_move(self, some_parameters):
+    
+
+# Optional:
+  def move(self, some_parameters):
+    pass
+
+# Optional:
+  def goal_test(self):
+    pass"""
+
+
+
 
 global turn
 turn = 12
 animal = [3,3,3,3,3]#1-extinct, 2-endangered, 3-balanced, 4-overpopulated, 5-dangerously overpopulated
 #hawk,snake,rabbit,mouse,flowers
 currency = 100000
+rangeInfo = 0
                           
 class card:
-  def __init__(self,ques,stat1,stat2,curr,dia1,dia2,card,choiceList):
+  def __init__(self,ques,stat1,stat2,curr,intro,dia1,dia2,card,choiceList):
     self.ques = ques#question
     self.yesStat = stat1#change animal1
     self.noStat = stat2#change animal2
     self.curr = curr#change currency
+    self.intro = intro
     self.dia1 = dia1#print after choice1
     self.dia2= dia2#print after choice2
     self.card = card#card number
@@ -51,60 +101,74 @@ class card:
   
 card1 = card("Do you want to deploy some hawks to curb the snake population. \
 This will also have an impact on the population population of mice due to the \
-reduced number of snakes.",[("s",-1),("m",-1)],[],0,"dia1","dia2",1,[0,1])
+reduced number of snakes.",[("s",-1),("m",-1)],[],0,"","dia1","dia2",1,[0,1])
 card2 = card("Do you want to plant more flowers to increase the supply of food \
 for rabbits. This will have an impact on the population of snakes due to the \
-increased supply of food for them.",[("f",1),("r",1),("s",1)],[],0,"dia1","dia2",2,[0,1])
+increased supply of food for them.",[("f",1),("r",1),("s",1)],[],0,"","dia1","dia2",2,[0,1])
 card3 = card("Do you want to build a steel factory next to the wildflowers gardens.\
 Toxic waste from the factory might kill some of the wildflowers. This will cause some\
-of the rabbits to starve to death.",[("f",-1),("r",-1)],[],0,"dia1","dia2",3,[0,1])
+of the rabbits to starve to death.",[("f",-1),("r",-1)],[],0,"","dia1","dia2",3,[0,1])
 card4 = card("Do you want to legalize the hunting of hawks as game? This will cause \
 a decrease in the population of hawks and consequently increase the population of\
-rabbits.",[("h",-1),("r",1)],[],0,"dia1","dia2",4,[0,1])
+rabbits.",[("h",-1),("r",1)],[],0,"","dia1","dia2",4,[0,1])
+card5 = card("How many rabbits would you like to make infertile?",[("h",-1),("r",1)],[],0,"","dia1","dia2",5,[2])
 cardList = []
 cardList.append(card1)
 cardList.append(card2)
 cardList.append(card3)
 cardList.append(card4)
+cardList.append(card5)
 def copy_state(s):
-  news = {}
-  news['turn'] = s['turn']
-  news['animal']=s['animal']
-  news['currency'] = s['currency']
+  news = Game_State(s.turn, s.animal, s.currency)
   return news
 
-def can_move(s,m,i):
+def can_move(s,i):
   currentCard = newCard(s)
   for l in currentCard.choiceList:
+
     if l == i:
       return True
-
   return False
   
   '''Get the card for the state and from that get the listed choices'''
   return True
+def getRangeChange(s):
+  card = newCard(s)
+  if card.card == 5:
+    return [("r",-rangeInfo)]
 def changeStat(s,listChange):
+  animals = s.animal
   for change in listChange:
     if change[0] == "h":
-      if s['animal'][0] + change[1] > 0 or s['animal'][0] + change[1] < 6:
-        s['animal'][0] += change[1]
+      if animals[0] + change[1] > -1 and animals[0] + change[1] < 6:
+        animals[0] += change[1]
+      elif animals[0] + change[1] < 0:
+        animals[0] = 0     
     elif change[0] == "s":
-      if s['animal'][1] + change[1] > 0 or s['animal'][1] + change[1] < 6:
-        s['animal'][1] += change[1]
+      if animals[1] + change[1] > 0 and animals[1] + change[1] < 6:
+        animals[1] += change[1]
+      elif animals[1] + change[1] < 0:
+        animals[1] = 0
     elif change[0] == "r":
-      if s['animal'][2] + change[1] > 0 or s['animal'][2] + change[1] < 6:
-        s['animal'][2] += change[1]
+      if animals[2] + change[1] > 0 and animals[2] + change[1] < 6:
+        animals[2] += change[1]
+      elif animals[2] + change[1] < 0:
+        animals[2] = 0
     elif change[0] == "m":
-      if s['animal'][3] + change[1] > 0 or s['animal'][3] + change[1] < 6:
-        s['animal'][3] += change[1]
+      if animals[3] + change[1] > 0 and animals[3] + change[1] < 6:
+        animals[3] += change[1]
+      elif animals[3] + change[1] < 0:
+        animals[3] = 0
     elif change[0] == "f":
-      if s['animal'][4] + change[1] > 0 or s['animal'][4] + change[1] < 6:
-        s['animal'][4] += change[1]
+      if animals[4] + change[1] > 0 and animals[4] + change[1] < 6:
+        animals[4] += change[1]
+      elif animals[4] + change[1] < 0:
+        animals[4] = 0
 
 def newCard(s):
-  return cardList[s['turn']%len(cardList)]
+  return cardList[s.turn%len(cardList)]
   
-def move(olds,x):
+def move(olds,x,i):
   '''Assuming it's legal to make the move, this computes
      the new state resulting from moving the boat carrying
      m missionaries and c cannibals.'''
@@ -114,7 +178,9 @@ def move(olds,x):
     changeStat(s,currentCard.yesStat)
   elif x == "No":
     changeStat(s,currentCard.noStat)
-  s['turn'] +=1
+  elif i == 2:
+    changeStat(s,getRangeChange(s))
+  s.turn-=1
 
 
   
@@ -142,22 +208,22 @@ class Operator:
   def is_applicable(self, s):
     return self.precond(s)
 
-  def apply(self, s):
+  def apply(self, s, change = 0):
     return self.state_transf(s)
 #</COMMON_CODE>
 
 #<INITIAL_STATE>
-INITIAL_STATE = {'turn':12 ,'animal':[3,3,3,3,3], 'currency':10000}
+INITIAL_STATE = Game_State()
 #</INITIAL_STATE>
 
 #<OPERATORS>
-Ecosystem_Operators = ["Yes", "No"]
+Ecosystem_Operators = ["Yes", "No","Range"]
 
 OPERATORS = [Operator(
   x,
-  lambda s, x1 = x: can_move(s,x1,i),
-  lambda s, x1 = x: move(s,x1) ) 
-  for i,x in enumerate(Ecosystem_Operators)]
+  lambda s, x1 = x: can_move(s,Ecosystem_Operators.index(x1)),
+  lambda s, x1 = x: move(s,x1,Ecosystem_Operators.index(x1)) ) 
+  for x in Ecosystem_Operators]
 #</OPERATORS>
 
 #<GOAL_TEST> (optional)

@@ -83,7 +83,7 @@ def client_mainloop():
   while(True):
     print("\nStep "+str(STEP)+", Depth "+str(DEPTH))
     if PROBLEM.goal_test(CURRENT_STATE):
-      print('''CONGRATULATIONS!
+      print('''CONGRATULATIONS!!
 You have solved the problem by reaching a goal state.
 Do you wish to continue exploring?
 ''')

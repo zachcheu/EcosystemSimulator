@@ -93,7 +93,7 @@ Do you wish to continue exploring?
     
     applicability_vector = get_applicability_vector(CURRENT_STATE)
     #print("applicability_vector = "+str(applicability_vector))
-    print("The current state is "+str(CURRENT_STATE))
+    print(str(CURRENT_STATE))
     card = PROBLEM.newCard(CURRENT_STATE)
     operatorList = card.choiceList
     print(card.ques)

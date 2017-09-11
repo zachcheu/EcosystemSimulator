@@ -50,11 +50,11 @@ class state_array:
     i = 0
     for r in self.color_array:
       #j = 0
-      s1 = a[0]*60
-      s2 = a[1]*60
-      s3 = a[2]*60
-      s4 = a[3]*60
-      s5 = a[4]*60
+      s1 = a[0]
+      s2 = a[1]
+      s3 = a[2]
+      s4 = a[3]
+      s5 = a[4]
       """
       hawk=tk.PhotoImage(file="hawk.gif")
       rabbit=tk.PhotoImage(file="rabbit.gif")
@@ -133,7 +133,7 @@ def test():
   two_by_two = state_array(color_array=[[(255,0,0),(0,255,0)],[(0,0,255),(255,0,0)]],
                            string_array=[["R","G"],["B","R"]],
                            background=(92,0,128))
-  two_by_two.show()
+  #two_by_two.show()
 #test()
 if __name__=="__main__":
   test()

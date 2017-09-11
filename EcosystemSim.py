@@ -33,7 +33,7 @@ the wicked problem of bio extinction."
 #<COMMON_CODE>
 class Game_State:
 
-  def __init__(self, turn = 15, animal = [3,3,3,3,3], currency = 10000):  # Change parameters as needed for your game.
+  def __init__(self, turn = 15, animal = [300,300,500,300,300], currency = 10000):  # Change parameters as needed for your game.
     self.turn = turn
     self.animal = animal
     self.currency = 10000
@@ -101,17 +101,17 @@ class card:
   
 card1 = card("Do you want to deploy some hawks to curb the snake population. \
 This will also have an impact on the population population of mice due to the \
-reduced number of snakes.",[("s",-1),("m",-1)],[],0,"","dia1","dia2",1,[0,1])
+reduced number of snakes.",[("s",-100),("m",-50)],[],0,"","dia1","dia2",1,[0,1])
 card2 = card("Do you want to plant more flowers to increase the supply of food \
 for rabbits. This will have an impact on the population of snakes due to the \
-increased supply of food for them.",[("f",1),("r",1),("s",1)],[],0,"","dia1","dia2",2,[0,1])
+increased supply of food for them.",[("f",20),("r",50),("s",120)],[],0,"","dia1","dia2",2,[0,1])
 card3 = card("Do you want to build a steel factory next to the wildflowers gardens.\
 Toxic waste from the factory might kill some of the wildflowers. This will cause some\
-of the rabbits to starve to death.",[("f",-1),("r",-1)],[],0,"","dia1","dia2",3,[0,1])
+of the rabbits to starve to death.",[("f",-150),("r",-20)],[],0,"","dia1","dia2",3,[0,1])
 card4 = card("Do you want to legalize the hunting of hawks as game? This will cause \
 a decrease in the population of hawks and consequently increase the population of\
-rabbits.",[("h",-1),("r",1)],[],0,"","dia1","dia2",4,[0,1])
-card5 = card("How many rabbits would you like to make infertile?",[("h",-1),("r",1)],[],0,"","dia1","dia2",5,[2])
+rabbits.",[("h",-10),("r",50)],[],0,"","dia1","dia2",4,[0,1])
+card5 = card("How many rabbits would you like to make infertile?",[],[],0,"","dia1","dia2",5,[2])
 cardList = []
 cardList.append(card1)
 cardList.append(card2)
@@ -140,30 +140,40 @@ def changeStat(s,listChange):
   animals = s.animal
   for change in listChange:
     if change[0] == "h":
-      if animals[0] + change[1] > -1 and animals[0] + change[1] < 6:
+      if animals[0] + change[1] > 0 and animals[0] + change[1] < 500:
         animals[0] += change[1]
       elif animals[0] + change[1] < 0:
-        animals[0] = 0     
+        animals[0] = 0
+      elif animals[0] + change[1] > 500:
+        animals[0] = 500
     elif change[0] == "s":
-      if animals[1] + change[1] > 0 and animals[1] + change[1] < 6:
+      if animals[1] + change[1] > 0 and animals[1] + change[1] < 500:
         animals[1] += change[1]
       elif animals[1] + change[1] < 0:
         animals[1] = 0
+      elif animals[1] + change[1] > 500:
+        animals[1] = 500
     elif change[0] == "r":
-      if animals[2] + change[1] > 0 and animals[2] + change[1] < 6:
+      if animals[2] + change[1] > 0 and animals[2] + change[1] < 500:
         animals[2] += change[1]
       elif animals[2] + change[1] < 0:
         animals[2] = 0
+      elif animals[2] + change[1] > 500:
+        animals[2] = 500
     elif change[0] == "m":
-      if animals[3] + change[1] > 0 and animals[3] + change[1] < 6:
+      if animals[3] + change[1] > 0 and animals[3] + change[1] < 500:
         animals[3] += change[1]
       elif animals[3] + change[1] < 0:
         animals[3] = 0
+      elif animals[3] + change[1] > 500:
+        animals[3] = 500
     elif change[0] == "f":
-      if animals[4] + change[1] > 0 and animals[4] + change[1] < 6:
+      if animals[4] + change[1] > 0 and animals[4] + change[1] < 500:
         animals[4] += change[1]
       elif animals[4] + change[1] < 0:
         animals[4] = 0
+      elif animals[4] + change[1] > 500:
+        animals[4] = 500
 
 def newCard(s):
   return cardList[s.turn%len(cardList)]

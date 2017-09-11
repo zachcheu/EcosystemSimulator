@@ -9,8 +9,8 @@ from tkinter import font
 
 myFont=None
 
-WIDTH = 500
-HEIGHT = 500
+WIDTH = 1000
+HEIGHT = 1000
 TITLE = 'Ecosystem Simulator'
 
 def initialize_vis():

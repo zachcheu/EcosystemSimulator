@@ -56,11 +56,11 @@ class state_array:
       s4 = a[3]
       s5 = a[4]
 
-      hawk=tk.PhotoImage(file="hawk.gif")
-      rabbit=tk.PhotoImage(file="rabbit.gif")
-      snake=tk.PhotoImage(file="snake.gif")
-      mouse=tk.PhotoImage(file="mouse.gif")
-      flower=tk.PhotoImage(file="flower.gif")
+      hawk=tk.PhotoImage(file="AnimalPictures/hawk.gif")
+      rabbit=tk.PhotoImage(file="AnimalPictures/rabbit.gif")
+      snake=tk.PhotoImage(file="AnimalPictures/snake.gif")
+      mouse=tk.PhotoImage(file="AnimalPictures/mouse.gif")
+      flower=tk.PhotoImage(file="AnimalPictures/flower.gif")
 
       ty = -50#text shift y
       iy = 0#image shift y
@@ -93,7 +93,7 @@ class state_array:
       STATE_WINDOW.canvas.create_line(700,50,700,580+70,width=5.0, fill = 'black')#limit line
 
       STATE_WINDOW.canvas.create_text(100,600+50,text="REVENUE:   "+ str(state.currency))
-      STATE_WINDOW.canvas.create_text(80,630+50,text="Turn:   "+ str(state.turn))
+      STATE_WINDOW.canvas.create_text(80,630+50,text="Turns Left:   "+ str(state.turn))
       
 #      for c in r:
 #        print(c, end=' ')

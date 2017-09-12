@@ -36,7 +36,7 @@ class Game_State:
   def __init__(self, turn = 15, animal = [300,300,500,300,300], currency = 10000):  # Change parameters as needed for your game.
     self.turn = turn
     self.animal = animal
-    self.currency = 10000
+    self.currency = currency
   
   def __copy__(self):
     news = Game_State(self.turn, self.animal, self.currency) # Change to be consistent with constructor
@@ -64,27 +64,12 @@ class Game_State:
   def __hash__(self):
     # This could be as simple as 
     return (str(self)).__hash__()
-    
-"""# Optional:
-  def can_move(self, some_parameters):
-    
-
-# Optional:
-  def move(self, some_parameters):
-    pass
-
-# Optional:
-  def goal_test(self):
-    pass"""
-
-
-
 
 global turn
 turn = 12
 animal = [3,3,3,3,3]#1-extinct, 2-endangered, 3-balanced, 4-overpopulated, 5-dangerously overpopulated
 #hawk,snake,rabbit,mouse,flowers
-currency = 100000
+currency = [100000]
 rangeInfo = 0
                           
 class card:
@@ -92,7 +77,7 @@ class card:
     self.ques = ques#question
     self.yesStat = stat1#change animal1
     self.noStat = stat2#change animal2
-    self.curr = curr#change currency
+    self.currency = curr#change currency
     self.intro = intro
     self.dia1 = dia1#print after choice1
     self.dia2= dia2#print after choice2
@@ -101,23 +86,25 @@ class card:
   
 card1 = card("Do you want to deploy some hawks to curb the snake population. \
 This will also have an impact on the population population of mice due to the \
-reduced number of snakes.",[("s",-100),("m",-50)],[],0,"","dia1","dia2",1,[0,1])
+reduced number of snakes.",[("s",-100),("m",-50)],[],[-200,200],"","dia1","dia2",1,[0,1])
 card2 = card("Do you want to plant more flowers to increase the supply of food \
 for rabbits. This will have an impact on the population of snakes due to the \
-increased supply of food for them.",[("f",20),("r",50),("s",120)],[],0,"","dia1","dia2",2,[0,1])
+increased supply of food for them.",[("f",20),("r",50),("s",120)],[],[-200,200],"","dia1","dia2",2,[0,1])
 card3 = card("Do you want to build a steel factory next to the wildflowers gardens.\
 Toxic waste from the factory might kill some of the wildflowers. This will cause some\
-of the rabbits to starve to death.",[("f",-150),("r",-20)],[],0,"","dia1","dia2",3,[0,1])
+of the rabbits to starve to death.",[("f",-150),("r",-20)],[],[-200,200],"","dia1","dia2",3,[0,1])
 card4 = card("Do you want to legalize the hunting of hawks as game? This will cause \
 a decrease in the population of hawks and consequently increase the population of\
-rabbits.",[("h",-10),("r",50)],[],0,"","dia1","dia2",4,[0,1])
-card5 = card("How many rabbits would you like to make infertile?",[],[],0,"","dia1","dia2",5,[2])
+rabbits.",[("h",-10),("r",50)],[],[-200,200],"","dia1","dia2",4,[0,1])
+card5 = card("How many rabbits would you like to make infertile?",[],[],[-200,200],"","dia1","dia2",5,[2])
+card6 = card("How many hawks would you like to make infertile?",[],[],[-200,200],"","dia1","dia2",6,[2])
 cardList = []
 cardList.append(card1)
 cardList.append(card2)
 cardList.append(card3)
 cardList.append(card4)
 cardList.append(card5)
+cardList.append(card6)
 def copy_state(s):
   news = Game_State(s.turn, s.animal, s.currency)
   return news
@@ -129,14 +116,20 @@ def can_move(s,i):
     if l == i:
       return True
   return False
-  
+
   '''Get the card for the state and from that get the listed choices'''
   return True
 def getRangeChange(s):
   card = newCard(s)
   if card.card == 5:
     return [("r",-rangeInfo)]
+  if card.card == 6:
+    return [("h",-rangeInfo)]
+
+
 def changeStat(s,listChange):
+
+
   animals = s.animal
   for change in listChange:
     if change[0] == "h":
@@ -179,21 +172,19 @@ def newCard(s):
   return cardList[s.turn%len(cardList)]
   
 def move(olds,x,i):
-  '''Assuming it's legal to make the move, this computes
-     the new state resulting from moving the boat carrying
-     m missionaries and c cannibals.'''
   s = copy_state(olds) # start with a deep copy.
   currentCard = newCard(s)
   if x == "Yes":
     changeStat(s,currentCard.yesStat)
+    s.currency -= currentCard.currency[0]
+    
   elif x == "No":
     changeStat(s,currentCard.noStat)
+    s.currency -= currentCard.currency[1]
   elif i == 2:
     changeStat(s,getRangeChange(s))
+  print(s.turn)
   s.turn-=1
-
-
-  
   return s
 
 def describe_state(s):
@@ -203,7 +194,7 @@ def describe_state(s):
   
 def goal_test(s):
   '''If all Ms and Cs are on the right, then s is a goal state.'''
-  return (turn == 0)
+  return (s.turn == 0)
 
 def goal_message(s):
 

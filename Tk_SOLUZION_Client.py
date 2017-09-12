@@ -13,6 +13,7 @@
 
  Tk is the graphics and GUI Toolkit that ships with Python.
  This client program uses Tk only for its graphics, setting up
+ 
  a graphics window that is used for the display of each state
  of the problem-solution process.
 
@@ -88,7 +89,11 @@ You have solved the problem by reaching a goal state.
 Do you wish to continue exploring?
 ''')
       answer = input("Y or N? >> ")
-      if answer=="Y" or answer=="y": print("OK, continue")
+      if answer=="Y" or answer=="y":
+        CURRENT_STATE = PROBLEM.Game_State()
+        PROBLEM.render_state(CURRENT_STATE)
+        
+        print("OK, continue")
       else: return
     
     applicability_vector = get_applicability_vector(CURRENT_STATE)

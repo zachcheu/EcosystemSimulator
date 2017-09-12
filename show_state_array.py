@@ -55,42 +55,45 @@ class state_array:
       s3 = a[2]
       s4 = a[3]
       s5 = a[4]
-      """
+
       hawk=tk.PhotoImage(file="hawk.gif")
       rabbit=tk.PhotoImage(file="rabbit.gif")
       snake=tk.PhotoImage(file="snake.gif")
       mouse=tk.PhotoImage(file="mouse.gif")
       flower=tk.PhotoImage(file="flower.gif")
-      """
-      STATE_WINDOW.canvas.create_line(100,20,s1+80,20,width=20.0, fill = 'red')
-      STATE_WINDOW.canvas.create_text(50,20,text="HAWK " +str(a[0]))
-      #STATE_WINDOW.canvas.create_image(50,20, image=hawk)
-      #hawk.image = hawk
+
+      ty = -50#text shift y
+      iy = 0#image shift y
+      STATE_WINDOW.canvas.create_line(200,100,s1+200,100,width=30.0, fill = 'red')
+      STATE_WINDOW.canvas.create_text(100,100+ty,text="HAWK")
+      STATE_WINDOW.canvas.create_image(100,100+iy, image=hawk)
+      hawk.image = hawk
       
-      STATE_WINDOW.canvas.create_line(100,60,s2+80,60,width=20.0, fill = 'brown')
-      STATE_WINDOW.canvas.create_text(50,60,text="SNAKE " +str(a[1]))
-      #STATE_WINDOW.canvas.create_image(50,60, image=snake)
-      #snake.image = snake
+      STATE_WINDOW.canvas.create_line(200,220,s2+200,220,width=30.0, fill = 'brown')
+      STATE_WINDOW.canvas.create_text(100,220+ty,text="SNAKE")
+      STATE_WINDOW.canvas.create_image(100,220+iy, image=snake)
+      snake.image = snake
 
       
-      STATE_WINDOW.canvas.create_line(100,100,s3+80,100,width=20.0, fill = 'pink')
-      STATE_WINDOW.canvas.create_text(50,100,text="RABBIT " +str(a[2]))
-      #STATE_WINDOW.canvas.create_image(50,100, image=rabbit)
-      #rabbit.image = rabbit
+      STATE_WINDOW.canvas.create_line(200,340,s3+200,340,width=30.0, fill = 'pink')
+      STATE_WINDOW.canvas.create_text(100,340+ty,text="RABBIT")
+      STATE_WINDOW.canvas.create_image(100,340+iy, image=rabbit)
+      rabbit.image = rabbit
       
-      STATE_WINDOW.canvas.create_line(100,140,s4+80,140,width=20.0, fill = 'gray')
-      STATE_WINDOW.canvas.create_text(50,140,text="MOUSE " +str(a[3]))
-      #STATE_WINDOW.canvas.create_image(50,140, image=mouse)
-      #mouse.image = mouse
+      STATE_WINDOW.canvas.create_line(200,460,s4+200, 460,width=30.0, fill = 'gray')
+      STATE_WINDOW.canvas.create_text(100,460+ty,text="MOUSE")
+      STATE_WINDOW.canvas.create_image(100,460+iy, image=mouse)
+      mouse.image = mouse
 
-      STATE_WINDOW.canvas.create_line(100,180,s5+80,180,width=20.0, fill = 'green')
-      STATE_WINDOW.canvas.create_text(50,180,text="FLOWER " +str(a[4 ]))
-      #STATE_WINDOW.canvas.create_image(50,180, image=flower)
-      #flower.image = flower
+      STATE_WINDOW.canvas.create_line(200,580,s5+200,580,width=30.0, fill = 'green')
+      STATE_WINDOW.canvas.create_text(100,580+ty,text="FLOWER")
+      STATE_WINDOW.canvas.create_image(100,580+iy, image=flower)
+      flower.image = flower
 
-      STATE_WINDOW.canvas.create_line(300+80,0,300+80,180+20,width=5.0, fill = 'black')#limit
+      STATE_WINDOW.canvas.create_line(700,50,700,580+70,width=5.0, fill = 'black')#limit line
 
-      STATE_WINDOW.canvas.create_text(100,180+40,text="REVENUE:   "+ str(state.currency))
+      STATE_WINDOW.canvas.create_text(100,600+50,text="REVENUE:   "+ str(state.currency))
+      STATE_WINDOW.canvas.create_text(80,630+50,text="Turn:   "+ str(state.turn))
       
 #      for c in r:
 #        print(c, end=' ')
@@ -128,6 +131,7 @@ def initialize_tk(width=500, height=300, title='State Displa Window'):
   STATE_WINDOW = the_display
   print("VIS initialization finished")
 
+
 def test():
   initialize_tk()
   two_by_two = state_array(color_array=[[(255,0,0),(0,255,0)],[(0,0,255),(255,0,0)]],
@@ -137,5 +141,5 @@ def test():
 #test()
 if __name__=="__main__":
   test()
-  
+
 

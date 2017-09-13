@@ -102,13 +102,10 @@ Do you wish to continue exploring?
     card = PROBLEM.newCard(CURRENT_STATE)
     operatorList = card.choiceList
     print(card.ques)
-    if 0 in operatorList and 1 in operatorList:
-      for i in range(len(OPERATORS)):
-        if applicability_vector[i]:
-          print(str(i)+": "+OPERATORS[i].name)
-      command = input("Enter command: 0, 1, 2, etc. for operator; B-back; H-help; Q-quit. >> ")
-    elif 2 in operatorList:
-      command = input("Enter a number between 0 and upper bound. for operator; B-back; H-help; Q-quit. >>  ")      
+    for i in range(len(OPERATORS)):
+      if applicability_vector[i]:
+        print(str(i)+": "+OPERATORS[i].name)
+    command = input("Enter command: 0, 1, 2, etc. for operator; B-back; H-help; Q-quit. >> ")  
     if command=="B" or command=="b": 
       if len(STATE_STACK)>1:
         STATE_STACK.pop()
@@ -124,40 +121,25 @@ Do you wish to continue exploring?
     if command=="H" or command=="h": show_instructions(); continue
     if command=="Q" or command=="q": break
     if command=="": continue
-    if 0 in operatorList and 1 in operatorList:
-      try:
-        i = int(command)
-      except:
-        print("Unknown command or bad operator number.")
-        continue
-      print("Operator "+str(i)+" selected.")
-      if i<0 or i>= len(OPERATORS):
-        print("There is no operator with number "+str(i))
-        continue
-      if applicability_vector[i]:
-         CURRENT_STATE = OPERATORS[i].apply(CURRENT_STATE)
-         STATE_STACK.append(CURRENT_STATE)
-         PROBLEM.render_state(CURRENT_STATE)
-         DEPTH += 1
-         STEP += 1
-         continue
-      else:
-         print("Operator "+str(i)+" is not applicable to the current state.")
-         continue
-    elif 2 in operatorList:
-      try:
-        i = int(command)
-      except:
-        print("Unknown command or bad input value")
-        continue
-      print("Input: " + str(i))
-      if applicability_vector[2]:
-         PROBLEM.rangeInfo = i
-         CURRENT_STATE = OPERATORS[2].apply(CURRENT_STATE)
-         STATE_STACK.append(CURRENT_STATE)
-         PROBLEM.render_state(CURRENT_STATE)
-         DEPTH += 1
-         STEP += 1
+    try:
+      i = int(command)
+    except:
+      print("Unknown command or bad operator number.")
+      continue
+    print("Operator "+str(i)+" selected.")
+    if i<0 or i>= len(OPERATORS):
+      print("There is no operator with number "+str(i))
+      continue
+    if applicability_vector[i]:
+       CURRENT_STATE = OPERATORS[i].apply(CURRENT_STATE)
+       STATE_STACK.append(CURRENT_STATE)
+       PROBLEM.render_state(CURRENT_STATE)
+       DEPTH += 1
+       STEP += 1
+       continue
+    else:
+       print("Operator "+str(i)+" is not applicable to the current state.")
+       continue
       
     #print("Operator "+command+" not yet supported.")
 

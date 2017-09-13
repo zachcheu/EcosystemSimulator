@@ -70,15 +70,14 @@ turn = 12
 animal = [3,3,3,3,3]#1-extinct, 2-endangered, 3-balanced, 4-overpopulated, 5-dangerously overpopulated
 #hawk,snake,rabbit,mouse,flowers
 currency = [100000]
-rangeInfo = 0
                           
 class card:
-  def __init__(self,ques,stat1,stat2,curr,intro,dia1,dia2,card,choiceList):
+  def __init__(self,ques,stat1,stat2,curr,specific,dia1,dia2,card,choiceList):
     self.ques = ques#question
     self.yesStat = stat1#change animal1
     self.noStat = stat2#change animal2
     self.currency = curr#change currency
-    self.intro = intro
+    self.specific = specific
     self.dia1 = dia1#print after choice1
     self.dia2= dia2#print after choice2
     self.card = card#card number
@@ -96,8 +95,8 @@ of the rabbits to starve to death.",[("f",-150),("r",-20)],[],[-200,200],"","dia
 card4 = card("Do you want to legalize the hunting of hawks as game? This will cause \
 a decrease in the population of hawks and consequently increase the population of\
 rabbits.",[("h",-10),("r",50)],[],[-200,200],"","dia1","dia2",4,[0,1])
-card5 = card("How many rabbits would you like to make infertile?",[],[],[-200,200],"","dia1","dia2",5,[2])
-card6 = card("How many hawks would you like to make infertile?",[],[],[-200,200],"","dia1","dia2",6,[2])
+card5 = card("How many rabbits would you like to make infertile?",[],[],[-200,200],("r","-"),"dia1","dia2",5,list(range(7,28)))
+card6 = card("How many hawks would you like to make infertile?",[],[],[-200,200],("h","-"),"dia1","dia2",6,list(range(7,28)))
 cardList = []
 cardList.append(card1)
 cardList.append(card2)
@@ -109,27 +108,47 @@ def copy_state(s):
   news = Game_State(s.turn, s.animal, s.currency)
   return news
 
-def can_move(s,i):
+def can_move(s,x,i):
   currentCard = newCard(s)
   for l in currentCard.choiceList:
-
     if l == i:
+      if i > 6:
+        pop = 0
+        if currentCard.specific[0] == "h":
+             pop = s.animal[0]
+        elif currentCard.specific[0] == "s":
+             pop = s.animal[1]
+        elif currentCard.specific[0] == "r":
+             pop = s.animal[2]
+        elif currentCard.specific[0] == "m":
+             pop = s.animal[3]
+        elif currentCard.specific[0] == "f":
+             pop = s.animal[4]
+        return (int(x)<pop)
       return True
   return False
-
-  '''Get the card for the state and from that get the listed choices'''
-  return True
-def getRangeChange(s):
+             
+def getRangeChange(s,x):
   card = newCard(s)
   if card.card == 5:
-    return [("r",-rangeInfo)]
+    return [("r",-int(x))]
   if card.card == 6:
-    return [("h",-rangeInfo)]
-
+    return [("h",-int(x))]
+def getAnimalChange(s,x):
+  card = newCard(s)
+  if x == "hawk":
+    return[("h",card.specific[0])]
+  if x == "snake":
+    return[("s",card.specific[0])]
+  if x == "rabbit":
+    return[("r",card.specific[0])]
+  if x == "mouse":
+    return[("m",card.specific[0])]
+  if x == "flowers":
+    return[("f",card.specific[0])]
+  
 
 def changeStat(s,listChange):
-
-
   animals = s.animal
   for change in listChange:
     if change[0] == "h":
@@ -181,9 +200,10 @@ def move(olds,x,i):
   elif x == "No":
     changeStat(s,currentCard.noStat)
     s.currency -= currentCard.currency[1]
-  elif i == 2:
-    changeStat(s,getRangeChange(s))
-  print(s.turn)
+  elif i > 6:
+    changeStat(s,getRangeChange(s,x))
+  elif i > 1:
+    changeState(s,getAnimalChange(s,x))
   s.turn-=1
   return s
 
@@ -218,11 +238,17 @@ INITIAL_STATE = Game_State()
 #</INITIAL_STATE>
 
 #<OPERATORS>
-Ecosystem_Operators = ["Yes", "No","Range"]
+Ecosystem_Operators = ["Yes", "No",\
+                       "hawk","snake","rabbit","mouse","flowers",\
+                       "0","25","50","75",\
+                       "100","125","150","175",\
+                       "200","225","250","275",\
+                       "300","325","350","375",\
+                       "400","425","450","475","500"]
 
 OPERATORS = [Operator(
   x,
-  lambda s, x1 = x: can_move(s,Ecosystem_Operators.index(x1)),
+  lambda s, x1 = x: can_move(s,x1,Ecosystem_Operators.index(x1)),
   lambda s, x1 = x: move(s,x1,Ecosystem_Operators.index(x1)) ) 
   for x in Ecosystem_Operators]
 #</OPERATORS>

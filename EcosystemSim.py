@@ -124,7 +124,7 @@ def can_move(s,x,i):
              pop = s.animal[3]
         elif currentCard.specific[0] == "f":
              pop = s.animal[4]
-        return (int(x)<pop)
+        return (int(x)<=pop)
       return True
   return False
              
@@ -154,42 +154,54 @@ def changeStat(s,listChange):
     if change[0] == "h":
       if animals[0] + change[1] > 0 and animals[0] + change[1] < 500:
         animals[0] += change[1]
-      elif animals[0] + change[1] < 0:
+      elif animals[0] + change[1] <=0:
         animals[0] = 0
       elif animals[0] + change[1] > 500:
         animals[0] = 500
     elif change[0] == "s":
       if animals[1] + change[1] > 0 and animals[1] + change[1] < 500:
         animals[1] += change[1]
-      elif animals[1] + change[1] < 0:
+      elif animals[1] + change[1] <= 0:
         animals[1] = 0
       elif animals[1] + change[1] > 500:
         animals[1] = 500
     elif change[0] == "r":
       if animals[2] + change[1] > 0 and animals[2] + change[1] < 500:
         animals[2] += change[1]
-      elif animals[2] + change[1] < 0:
+      elif animals[2] + change[1] <= 0:
         animals[2] = 0
       elif animals[2] + change[1] > 500:
         animals[2] = 500
     elif change[0] == "m":
       if animals[3] + change[1] > 0 and animals[3] + change[1] < 500:
         animals[3] += change[1]
-      elif animals[3] + change[1] < 0:
+      elif animals[3] + change[1] <= 0:
         animals[3] = 0
       elif animals[3] + change[1] > 500:
         animals[3] = 500
     elif change[0] == "f":
       if animals[4] + change[1] > 0 and animals[4] + change[1] < 500:
         animals[4] += change[1]
-      elif animals[4] + change[1] < 0:
+      elif animals[4] + change[1] <= 0:
         animals[4] = 0
       elif animals[4] + change[1] > 500:
         animals[4] = 500
 
+def automatePop(s):
+  #hawk,snake,rabbit,mouse,flowers
+  animal = s.animal[:]
+  listChange = [("h",(animal[1]-300)*0.1+(animal[2]-300)*0.1+(animal[3]-300)*0.1),\
+                ("s",(animal[2]-300)*0.1+(animal[3]-300)*0.1-(animal[0]-300)*0.1),\
+                ("r",(animal[4]-300)*0.1-(animal[0]-300)*0.1-(animal[1]-300)*0.1),\
+                ("m",(animal[4]-300)*0.1-(animal[0]-300)*0.1-(animal[1]-300)*0.1),\
+                ("f",-(animal[2]-300)*0.1-(animal[3]-300)*0.1+10)]
+  changeStat(s,listChange)
+  
+  
+  
 def newCard(s):
   return cardList[s.turn%len(cardList)]
-  
+
 def move(olds,x,i):
   s = copy_state(olds) # start with a deep copy.
   currentCard = newCard(s)
@@ -204,6 +216,7 @@ def move(olds,x,i):
     changeStat(s,getRangeChange(s,x))
   elif i > 1:
     changeState(s,getAnimalChange(s,x))
+  automatePop(s)
   s.turn-=1
   return s
 
@@ -214,6 +227,8 @@ def describe_state(s):
   
 def goal_test(s):
   '''If all Ms and Cs are on the right, then s is a goal state.'''
+  if 0 in s.animal:
+    return True
   return (s.turn == 0)
 
 def goal_message(s):

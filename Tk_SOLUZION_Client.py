@@ -84,9 +84,9 @@ def client_mainloop():
   while(True):
     print("\nStep "+str(STEP)+", Depth "+str(DEPTH))
     if PROBLEM.goal_test(CURRENT_STATE):
-      print('''CONGRATULATIONS!!
-You have solved the problem by reaching a goal state.
-Do you wish to continue exploring?
+      print('''You have reached a final state within the game. Either you survived all 15 \
+rounds without having a single animal go extinct or you caused an animal to become extinct \
+during the 15 rounds.
 ''')
       answer = input("Y or N? >> ")
       if answer=="Y" or answer=="y":

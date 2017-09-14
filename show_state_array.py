@@ -93,7 +93,7 @@ class state_array:
       STATE_WINDOW.canvas.create_line(700,50,700,580+70,width=5.0, fill = 'black')#limit line
 
       STATE_WINDOW.canvas.create_text(100,600+50,text="REVENUE:   "+ str(state.currency))
-      STATE_WINDOW.canvas.create_text(80,630+50,text="Turns Left:   "+ str(state.turn))
+      STATE_WINDOW.canvas.create_text(80,630+50,text="Year:    "+ str(2030 - state.turn*2))
       STATE_WINDOW.canvas.create_text(60,660+50,text="Score:   "+ str(state.score))
       
 #      for c in r:

@@ -13,7 +13,6 @@
 
  Tk is the graphics and GUI Toolkit that ships with Python.
  This client program uses Tk only for its graphics, setting up
- 
  a graphics window that is used for the display of each state
  of the problem-solution process.
 
@@ -83,29 +82,22 @@ def client_mainloop():
   PROBLEM.render_state(CURRENT_STATE)
   while(True):
     print("\nStep "+str(STEP)+", Depth "+str(DEPTH))
+    print("CURRENT_STATE = "+str(CURRENT_STATE))
     if PROBLEM.goal_test(CURRENT_STATE):
-      print('''You have reached a final state within the game. Either you survived all 15 \
-rounds without having a single animal go extinct or you caused an animal to become extinct \
-during the 15 rounds.
+      print('''CONGRATULATIONS!
+You have solved the problem by reaching a goal state.
+Do you wish to continue exploring?
 ''')
       answer = input("Y or N? >> ")
-      if answer=="Y" or answer=="y":
-        CURRENT_STATE = PROBLEM.Game_State()
-        PROBLEM.render_state(CURRENT_STATE)
-        
-        print("OK, continue")
+      if answer=="Y" or answer=="y": print("OK, continue")
       else: return
-    
+
     applicability_vector = get_applicability_vector(CURRENT_STATE)
     #print("applicability_vector = "+str(applicability_vector))
-    print(str(CURRENT_STATE))
-    card = PROBLEM.newCard(CURRENT_STATE)
-    operatorList = card.choiceList
-    print(card.ques)
     for i in range(len(OPERATORS)):
       if applicability_vector[i]:
         print(str(i)+": "+OPERATORS[i].name)
-    command = input("Enter command: 0, 1, 2, etc. for operator; B-back; H-help; Q-quit. >> ")  
+    command = input("Enter command: 0, 1, 2, etc. for operator; B-back; H-help; Q-quit. >> ")
     if command=="B" or command=="b": 
       if len(STATE_STACK)>1:
         STATE_STACK.pop()
@@ -140,7 +132,6 @@ during the 15 rounds.
     else:
        print("Operator "+str(i)+" is not applicable to the current state.")
        continue
-      
     #print("Operator "+command+" not yet supported.")
 
 def get_applicability_vector(s):
@@ -243,7 +234,7 @@ class Client(threading.Thread):
 # The following is only executed if this module is being run as the main
 # program, rather than imported from another one.
 if __name__ == '__main__':
-  import show_state_array
-  client = Client(show_state_array.STATE_WINDOW)
-  show_state_array.STATE_WINDOW.mainloop()
+  import bio_show_state_array
+  client = Client(bio_show_state_array.STATE_WINDOW)
+  bio_show_state_array.STATE_WINDOW.mainloop()
   print("The session is finished.")

@@ -3,7 +3,7 @@ Version of Aug. 5, 2017.
 
 '''
 
-from show_state_array import initialize_tk, state_array, state_display, STATE_WINDOW, test
+from bio_show_state_array import initialize_tk, state_array, state_display, STATE_WINDOW, test
 
 from tkinter import font
 

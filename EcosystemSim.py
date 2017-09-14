@@ -25,7 +25,8 @@ PROBLEM_DESC = \
    game made with python that addresses
    the wicked problem of bio extinction."
    '''
-
+global toPrint
+toPrint = True
 
 # </METADATA>
 
@@ -67,14 +68,6 @@ class Game_State:
     def __hash__(self):
         # This could be as simple as 
         return (str(self)).__hash__()
-
-
-global turn
-turn = 12
-animal = [3, 3, 3, 3, 3]  # 1-extinct, 2-endangered, 3-balanced, 4-overpopulated, 5-dangerously overpopulated
-# hawk,snake,rabbit,mouse,flowers
-currency = [100000]
-
 
 class card:
     def __init__(self, ques, stat1, stat2, curr, specific, card, choiceList):
@@ -119,7 +112,12 @@ def copy_state(s):
 
 def can_move(s, x, i):
     currentCard = newCard(s)
+
+    
     for l in currentCard.choiceList:
+        if l == 0 and i == 0 or l == 2 and i == 2 or l == 8 and i == 8:
+            print(currentCard.ques)
+        
         if l == i:
             if l > 7:
                 pop = 0
@@ -266,9 +264,14 @@ def describe_state(s):
 
 def goal_test(s):
     '''If all Ms and Cs are on the right, then s is a goal state.'''
+    toPrint = True
     if 0 in s.animal:
+        print("You lose")
         return True
-    return (s.turn == 0)
+    if s.turn == 0:
+        print("You win")
+        return True
+    return False
 
 
 def goal_message(s):

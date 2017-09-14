@@ -96,6 +96,7 @@ class state_array:
       STATE_WINDOW.canvas.create_text(80,630+50,text="Year:    "+ str(2030 - state.turn*2))
       STATE_WINDOW.canvas.create_text(60,660+50,text="Score:   "+ str(state.score))
       
+      
 #      for c in r:
 #        print(c, end=' ')
 #        tk_rgb = "#%02x%02x%02x" % c

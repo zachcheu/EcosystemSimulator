@@ -47,9 +47,9 @@ class Game_State:
 
     def __str__(self):
         # Produces a textual description of a state.
-        txt = "State is on " + str(self.turn) + ". Player has " + str(self.currency) + " dollars. There are " + str(
-            self.animal[0]) + " hawk(s), " + str(self.animal[1]) + " snake(s), " + str(self.animal[2]) \
-              + " rabbit(s), " + str(self.animal[3]) + " mouse(s), " + str(self.animal[4]) + " flowers. " + "Score is " + str(self.score)
+        txt = "State is on " + str(self.turn) + ". Player has " + str(self.currency) + " dollars. There are " + str(int(
+            self.animal[0])) + " hawk(s), " + str(int(self.animal[1])) + " snake(s), " + str(int(self.animal[2])) \
+              + " rabbit(s), " + str(int(self.animal[3])) + " mouse(s), " + str(int(self.animal[4])) + " flowers. " + "Score is " + str(self.score)
         return txt
 
     def __eq__(self, other):

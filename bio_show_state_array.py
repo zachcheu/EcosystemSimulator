@@ -68,34 +68,38 @@ class state_array:
       STATE_WINDOW.canvas.create_text(100,100+ty,text="HAWK")
       STATE_WINDOW.canvas.create_image(100,100+iy, image=hawk)
       hawk.image = hawk
+      STATE_WINDOW.canvas.create_text(750,100+iy,text=str(int(a[0]))) 
       
       STATE_WINDOW.canvas.create_line(200,220,s2+200,220,width=30.0, fill = 'brown')
       STATE_WINDOW.canvas.create_text(100,220+ty,text="SNAKE")
       STATE_WINDOW.canvas.create_image(100,220+iy, image=snake)
       snake.image = snake
+      STATE_WINDOW.canvas.create_text(750,220+iy,text=str(int(a[1]))) 
 
       
       STATE_WINDOW.canvas.create_line(200,340,s3+200,340,width=30.0, fill = 'pink')
       STATE_WINDOW.canvas.create_text(100,340+ty,text="RABBIT")
       STATE_WINDOW.canvas.create_image(100,340+iy, image=rabbit)
       rabbit.image = rabbit
+      STATE_WINDOW.canvas.create_text(750,340+iy,text=str(int(a[2]))) 
       
       STATE_WINDOW.canvas.create_line(200,460,s4+200, 460,width=30.0, fill = 'gray')
       STATE_WINDOW.canvas.create_text(100,460+ty,text="MOUSE")
       STATE_WINDOW.canvas.create_image(100,460+iy, image=mouse)
       mouse.image = mouse
+      STATE_WINDOW.canvas.create_text(750,460+iy,text=str(int(a[3])))
 
       STATE_WINDOW.canvas.create_line(200,580,s5+200,580,width=30.0, fill = 'green')
       STATE_WINDOW.canvas.create_text(100,580+ty,text="FLOWER")
       STATE_WINDOW.canvas.create_image(100,580+iy, image=flower)
       flower.image = flower
+      STATE_WINDOW.canvas.create_text(750,580+iy,text=str(int(a[4]))) 
 
       STATE_WINDOW.canvas.create_line(700,50,700,580+70,width=5.0, fill = 'black')#limit line
 
       STATE_WINDOW.canvas.create_text(100,600+50,text="REVENUE:   "+ str(state.currency))
-      STATE_WINDOW.canvas.create_text(80,630+50,text="Year:    "+ str(2030 - state.turn*2))
-      STATE_WINDOW.canvas.create_text(60,660+50,text="Score:   "+ str(state.score))
-      
+      STATE_WINDOW.canvas.create_text(300,600+50,text="Year:    "+ str(2030 - state.turn*2))
+      STATE_WINDOW.canvas.create_text(500,600+50,text="Score:   "+ str(state.score))
       
 #      for c in r:
 #        print(c, end=' ')

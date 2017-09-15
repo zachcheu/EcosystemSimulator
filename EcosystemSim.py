@@ -35,7 +35,7 @@ toPrint = True
 
 # <COMMON_CODE>
 class Game_State:
-    def __init__(self, turn=15, animal=[250, 250, 500, 250, 250], currency=10000, score=0):  # Change parameters as needed for your game.
+    def __init__(self, turn=15, animal=[250, 250, 500, 250, 250], currency=1000, score=0):  # Change parameters as needed for your game.
         self.turn = turn
         self.animal = animal
         self.currency = currency
@@ -95,6 +95,7 @@ cardList.append(card("Do you want to cut down some trees for wood? It will affec
 cardList.append(card("Do you want to pass stricter anti-littering laws? Food will increase grass and wildflowers in the area.",[("f", 50)], [("f", -75)], [25, -25], "", 7, [0, 1]))
 cardList.append(card("Do you want to approve plans for urban development? This will increase tax revenues, but decrease habitat space.",[("h", -100), ("s", -100), ("r", -100), ("m", -100), ("f", -100)],[("h", 50), ("s", 50), ("r", 50), ("m", 50), ("f", 50)], [1000, -150], "", 8, [0, 1]))
 cardList.append(card("Do you want to spray herbicides on the flowers?", [("f", -50)], [("f", -75)], [25, -25], "", 90, [0, 1]))
+cardList.append(card("Do you want to ecourage farmers to spray pest control on their crops?", [("r", -70),("m", -75),("f",75)], [("r", 70),("m", 75),("f",-75)], [25, -25], "", 90, [0, 1]))
 
 # range
 cardList.append(card("How many endangered rabbit endangered advertisements would you like to put up around the city?", [], [],[-200, 200], ("r", "+", -2), 11, list(range(8, 29))))
@@ -103,6 +104,7 @@ cardList.append(card("How many hawk shelters would you like to create?", [], [],
 # animal cards
 cardList.append(card("What animal would you like to put on the endangered list?", [], [], [-200], [200], 7, list(range(2, 8))))
 cardList.append(card("What animal would you like to put on the overpopulated/hunting list?", [], [], [-200], [-200], 8,list(range(2, 8))))
+
 
 
 def copy_state(s):
@@ -265,6 +267,9 @@ def describe_state(s):
 def goal_test(s):
     '''If all Ms and Cs are on the right, then s is a goal state.'''
     toPrint = True
+    if s.currency == 0:
+        print("You lose")
+        return True
     if 0 in s.animal:
         print("You lose")
         return True
